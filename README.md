@@ -3,11 +3,15 @@ java android project about creating task master android app using intent , toast
 
 ## screenshots
 
-**home page**
+
+### home page
+
 ![homePage](./screenshots/homePage.png)
 
-**All tasks page**
+### All tasks page
+
 ![allTaskPage](./screenshots/alltaskpage.png)
 
-**Add task page**
+### Add task page
+
 ![addTakPage](./screenshots/addTaskPage.png)
