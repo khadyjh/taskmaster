@@ -1,17 +1,30 @@
 # taskmaster
 java android project about creating task master android app using intent , toast 
 
-## screenshots
+## lab 26
 
 
 ### home page
 
-![homePage](./screenshots/homePage.png)
+page with tow buttons one to add new task and one to show all tasks
 
 ### All tasks page
 
-![allTaskPage](./screenshots/alltaskpage.png)
+page to show all tasks
 
 ### Add task page
 
-![addTakPage](./screenshots/addTaskPage.png)
+page to add new task allow the user to inter the task title and description 
+
+## lab 27
+
+### Task Detail Page
+page to show task information 
+
+### Settings Page
+
+page allow the user to inter his/her name
+
+### screenshot
+
+![taskdetailpage](./screenshots/taskdetail.png)

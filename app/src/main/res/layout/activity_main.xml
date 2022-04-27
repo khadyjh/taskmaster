@@ -9,34 +9,59 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/text_view_my_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text="My tasks"
-        android:textColor="#FFA1A1"
+        android:text="@string/lbl_my_tasks"
+        android:textColor="#2C061F"
         android:textSize="30sp"
         android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_margin="10dp"
-        app:srcCompat="@drawable/task" />
+<!--    <ImageView-->
+<!--        android:id="@+id/imageView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="400dp"-->
+<!--        android:layout_margin="10dp"-->
+<!--        app:srcCompat="@drawable/task" />-->
 
+    <Button
+        android:id="@+id/btn_task_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_task_1"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/btn_task_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_task_2"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        />
+    <Button
+        android:id="@+id/btn_task_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lbl_task_3"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/btnAddTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:backgroundTint="#FFA1A1"
-            android:text="Add task"
+            android:text="@string/lbl_add_task"
             android:textStyle="bold" />
 
         <Button
@@ -44,8 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:backgroundTint="#FFA1A1"
-            android:text="All tasks"
+            android:text="@string/lbl_all_tasks"
             android:textStyle="bold" />
     </LinearLayout>
 

@@ -10,12 +10,12 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:text="All Tasks "
+        android:text="@string/lbl_all_tasks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:textColor="#FFA1A1"
+        android:textColor="#2C061F"
         android:textStyle="bold"
         android:textSize="30sp"/>
 

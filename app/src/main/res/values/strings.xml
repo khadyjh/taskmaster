@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">taskMaster</string>
+    <string name="lbl_submit">save</string>
+    <string name="lbl_inter_your_name">inter your name</string>
+    <string name="lorem_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat</string>
+    <string name="lbl_task_1">read28</string>
+    <string name="lbl_task_2">lab27</string>
+    <string name="lbl_task_3">code challenge 27</string>
+    <string name="lbl_menu_sitting">Sitting</string>
+    <string name="lbl_menu_task">Task</string>
+    <string name="lbl_title">task title</string>
+    <string name="lbl_add_task">Add task</string>
+    <string name="lbl_task_title">Task Title</string>
+    <string name="lbl_task_description">Task Description</string>
+    <string name="lbl_total_tasks">Total Tasks : 0</string>
+    <string name="lbl_all_tasks">All Tasks</string>
+    <string name="lbl_my_tasks">My tasks</string>
 </resources>
