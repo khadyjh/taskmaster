@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:text="Add task "
-        android:textColor="#FFA1A1"
+        android:text="@string/lbl_add_task"
+        android:textColor="#2C061F"
         android:textStyle="bold"
         android:textSize="30sp"/>
 
@@ -26,15 +26,14 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_margin="10dp"
-        android:text="Task Title "
-        android:textColor="#FFA1A1"
-
+        android:text="@string/lbl_task_title"
+        android:textColor="#2C061F"
         />
     <EditText
         android:id="@+id/taskTitleEditTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="task title "
+        android:hint="@string/lbl_task_title"
         android:layout_margin="10dp"
         />
 
@@ -42,17 +41,17 @@
         android:id="@+id/taskDescriptionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Description "
+        android:text="@string/lbl_task_description"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_margin="10dp"
-        android:textColor="#FFA1A1"
+        android:textColor="#2C061F"
         />
     <EditText
         android:id="@+id/taskDescriptionEditTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="task description"
+        android:hint="@string/lbl_task_description"
         android:layout_margin="10dp"
 
         />
@@ -63,18 +62,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:backgroundTint="#FFA1A1"
-        android:text="Add tasks"
+        android:text="@string/lbl_add_task"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/totalTasksView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Tasks : 0 "
+        android:text="@string/lbl_total_tasks"
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_margin="10dp"
-        android:textColor="#FFA1A1"
+        android:textColor="#2C061F"
         />
 </LinearLayout>
