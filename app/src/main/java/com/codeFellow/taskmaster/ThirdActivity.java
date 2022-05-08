@@ -14,12 +14,14 @@ public class ThirdActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_third);
 
+        // action bar
         ActionBar actionBar=getSupportActionBar();
 
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
+    // action bar
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 

@@ -15,4 +15,5 @@
     <string name="lbl_total_tasks">Total Tasks : 0</string>
     <string name="lbl_all_tasks">All Tasks</string>
     <string name="lbl_my_tasks">My tasks</string>
+    <string name="lbl_inter_task_num">inter task number</string>
 </resources>
