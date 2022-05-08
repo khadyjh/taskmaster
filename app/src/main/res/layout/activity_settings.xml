@@ -8,16 +8,27 @@
     tools:context=".SettingsActivity">
 
 
-
-
     <EditText
         android:id="@+id/edit_text_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20dp"
         android:hint="@string/lbl_inter_your_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="20dp"/>
+        app:layout_constraintVertical_bias="0.443"
+        tools:layout_editor_absoluteX="24dp" />
+
+    <EditText
+        android:id="@+id/edit_text_task_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="@string/lbl_inter_task_num"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="24dp" />
 
     <Button
         android:id="@+id/btn_submit"

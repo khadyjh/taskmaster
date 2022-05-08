@@ -28,3 +28,11 @@ page allow the user to inter his/her name
 ### screenshot
 
 ![taskdetailpage](./screenshots/taskdetail.png)
+
+
+# lab 28
+update home page to use recycler view 
+
+### screenshot
+
+![homepageWithRecyclerView](./screenshots/recyclerView.png)
