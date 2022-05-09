@@ -16,7 +16,7 @@
             android:name=".TaskDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".AddActivity"
+            android:name=".UI.AddActivity"
             android:exported="false" />
         <activity
             android:name=".ThirdActivity"

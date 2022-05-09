@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codeFellow.taskmaster.UI.AddActivity;
 import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.Task;
 import com.codeFellow.taskmaster.data.TaskAdapter;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addTaskIntent=new Intent(getApplicationContext(),AddActivity.class);
+                Intent addTaskIntent=new Intent(getApplicationContext(), AddActivity.class);
                 startActivity(addTaskIntent);
             }
         });
