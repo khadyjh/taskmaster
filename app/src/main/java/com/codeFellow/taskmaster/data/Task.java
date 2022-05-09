@@ -4,19 +4,19 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
+//@Entity
 public class Task {
 
-    @PrimaryKey(autoGenerate = true)
-    private int id;
+//    @PrimaryKey(autoGenerate = true)
+//    private int id;
 
-    @ColumnInfo(name = "title")
+//    @ColumnInfo(name = "title")
     private String title;
 
-    @ColumnInfo(name = "body")
+//    @ColumnInfo(name = "body")
     private String body;
 
-    @ColumnInfo(name = "state")
+//    @ColumnInfo(name = "state")
     private State state;
 
     public Task(String title, String body, State state) {
@@ -24,14 +24,14 @@ public class Task {
         this.body = body;
         this.state = state;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+//
+//    public int getId() {
+//        return id;
+//    }
+//
+//    public void setId(int id) {
+//        this.id = id;
+//    }
 
     public String getTitle() {
         return title;

@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.codeFellow.taskmaster.UI.AddActivity;
+import com.codeFellow.taskmaster.AddActivity;
 import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.Task;
 import com.codeFellow.taskmaster.data.TaskAdapter;
