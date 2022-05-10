@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_marginTop="176dp"
         android:hint="@string/lbl_inter_your_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/edit_text_task_num"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.443"
-        tools:layout_editor_absoluteX="24dp" />
+        tools:layout_editor_absoluteX="44dp" />
 
     <EditText
         android:id="@+id/edit_text_task_num"
@@ -25,19 +25,33 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="@string/lbl_inter_task_num"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_name"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
         tools:layout_editor_absoluteX="24dp" />
+
+    <Button
+        android:id="@+id/btn_submit_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/lbl_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_task_num" />
 
     <Button
         android:id="@+id/btn_submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lbl_submit"
         android:layout_margin="10dp"
+        android:text="@string/lbl_submit"
+        app:layout_constraintBottom_toTopOf="@+id/btn_submit_num"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_text_name" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
+        app:layout_constraintVertical_bias="0.07" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

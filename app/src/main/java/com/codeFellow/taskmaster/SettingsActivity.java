@@ -22,6 +22,7 @@ public class SettingsActivity extends AppCompatActivity {
     EditText mNameEditText;
     EditText mTaskNumEditText;
     Button mSubmitButton;
+    Button mSubmitNumberButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +31,14 @@ public class SettingsActivity extends AppCompatActivity {
         mNameEditText=findViewById(R.id.edit_text_name);
         mTaskNumEditText=findViewById(R.id.edit_text_task_num);
         mSubmitButton=findViewById(R.id.btn_submit);
+        mSubmitNumberButton=findViewById(R.id.btn_submit_num);
 
         mSubmitButton.setOnClickListener(view -> {
             saveName();
+        });
+
+        mSubmitNumberButton.setOnClickListener(view -> {
+            saveTaskNumber();
         });
 
         mNameEditText.addTextChangedListener(new TextWatcher() {
@@ -82,16 +88,29 @@ public class SettingsActivity extends AppCompatActivity {
     public void saveName(){
         // get the name
         String name=mNameEditText.getText().toString();
-        String taskNum=mTaskNumEditText.getText().toString();
+
 
         //create sharedPreference object
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor preferenceEditor=sharedPreferences.edit();
 
         preferenceEditor.putString(NAME,name);
+        preferenceEditor.apply();
+
+        Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
+    }
+
+    public void saveTaskNumber(){
+        // get the number
+        String taskNum=mTaskNumEditText.getText().toString();
+
+        //create sharedPreference object
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor=sharedPreferences.edit();
+
         preferenceEditor.putString(NUMBER,taskNum);
         preferenceEditor.apply();
 
-        Toast.makeText(this, "saved"+taskNum, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
     }
 }

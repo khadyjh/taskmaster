@@ -36,3 +36,13 @@ update home page to use recycler view
 ### screenshot
 
 ![homepageWithRecyclerView](./screenshots/recyclerView.png)
+
+
+# lab 29 
+use Room Library to store and retrieve persistence date and render it in recycler view
+
+### add task Page 
+add spinner to it so user can choose the state of his task
+
+### setting Page 
+the user can choose number of task he want to see in home page 

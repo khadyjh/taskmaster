@@ -16,4 +16,11 @@
     <string name="lbl_all_tasks">All Tasks</string>
     <string name="lbl_my_tasks">My tasks</string>
     <string name="lbl_inter_task_num">inter task number</string>
+    <string name="text_view_state">TextView</string>
+    <array name="state_spinner">
+        <item>COMPLETE</item>
+        <item>IN_PROGRESS</item>
+        <item>ASSIGNED</item>
+        <item>NEW</item>
+    </array>
 </resources>

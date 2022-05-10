@@ -24,9 +24,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.CustomViewHold
 
     public TaskAdapter(List<Task> tasks ,CustomClickListener listener,int taskNumber) {
         this.tasks = tasks;
-
         this.listener=listener;
-
         this.taskNumber=taskNumber;
     }
 
@@ -46,7 +44,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.CustomViewHold
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        if(taskNumber>tasks.size()){
+            return tasks.size();
+        }
+        return taskNumber;
+
     }
 
     final static class CustomViewHolder extends RecyclerView.ViewHolder  {

@@ -1,6 +1,7 @@
 package com.codeFellow.taskmaster;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,25 +23,37 @@ import android.widget.Toast;
 import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.Task;
 import com.codeFellow.taskmaster.data.TaskAdapter;
+import com.codeFellow.taskmaster.repo.AppDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements TaskAdapter.CustomClickListener {
 
-//    Button mBtnTask1;
-//    Button mBtnTask2;
-//    Button mBtnTask3;
+    private static final String TAG = MainActivity.class.getSimpleName();
+//        Button mBtnTask1;
+//        Button mBtnTask2;
+//        Button mBtnTask3;
     TextView mUserNameView;
+
+    RecyclerView mRecyclerView;
 
     List<Task> taskList=new ArrayList<>();
 
+    List<Task> databaseList=new ArrayList<>();
+
     int number;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //method to set task number
+        setTaskNumber();
+
         Button allTaskButton=findViewById(R.id.btnAllTask);
         Button addTaskButton=findViewById(R.id.btnAddTask);
 
@@ -56,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addTaskIntent=new Intent(getApplicationContext(),AddActivity.class);
+                Intent addTaskIntent=new Intent(getApplicationContext(), AddActivity.class);
                 startActivity(addTaskIntent);
             }
         });
@@ -80,17 +95,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 //        });
         ///////////////////////////////////////////////////////lab28////////////////////////////////////
 
-        fitchData();
-        RecyclerView recyclerView=findViewById(R.id.recycler_view_task);
-
-        //////
-        TaskAdapter taskAdapter=new TaskAdapter(taskList,this,number);
-
-        recyclerView.setAdapter(taskAdapter);
-
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        // method to set recycler view adapter and to set the data from database
+        sitRecyclerView();
 
 
     }
@@ -98,14 +104,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     ///////////////////////////////////////////////////////lab27////////////////////////////////////
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
+        // method to set username
         setName();
+        // method to set recycler view adapter and to set the data from database
+        sitRecyclerView();
+        //method to set task number
+        setTaskNumber();
 
-        //get task number
-        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-        number= Integer.parseInt(sharedPreferences.getString(SettingsActivity.NUMBER,"2"));
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        setTaskNumber();
+
     }
 
     @Override
@@ -154,10 +171,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     @SuppressLint("SetTextI18n")
     public void setName(){
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
-
-        mUserNameView.setText(sharedPreferences.getString(SettingsActivity.NAME,"My tasks")+"'s Tasks");
-
-
+        mUserNameView.setText(sharedPreferences.getString(SettingsActivity.NAME,"My")+" Tasks");
     }
 
     ///////////////////////////////////////////////////////lab28////////////////////////////////////
@@ -179,6 +193,23 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         Intent recycleIntent=new Intent(getApplicationContext(),TaskDetailActivity.class);
         recycleIntent.putExtra("title",taskList.get(position).getTitle());
         recycleIntent.putExtra("description",taskList.get(position).getBody());
+        recycleIntent.putExtra("state",taskList.get(position).getState().toString());
+        System.out.println("*********************************** "+taskList.get(position).getState());
         startActivity(recycleIntent);
+    }
+
+    public void sitRecyclerView(){
+        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
+        mRecyclerView=findViewById(R.id.recycler_view_task);
+        TaskAdapter taskAdapter=new TaskAdapter(taskList,this,number);
+        mRecyclerView.setAdapter(taskAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void setTaskNumber(){
+        //get task number
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        number= Integer.parseInt(sharedPreferences.getString(SettingsActivity.NUMBER,"2"));
     }
 }
