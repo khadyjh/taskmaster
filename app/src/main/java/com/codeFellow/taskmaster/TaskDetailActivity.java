@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class TaskDetailActivity extends AppCompatActivity {
     TextView mTitle;
     TextView mDescription;
+    TextView mState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +20,15 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
         mTitle=findViewById(R.id.text_view_title);
         mDescription=findViewById(R.id.text_view_lorem);
+        mState=findViewById(R.id.text_view_state);
 
         Intent titleIntent=getIntent();
         String title=titleIntent.getStringExtra("title");
         String description=titleIntent.getStringExtra("description");
+        String state=titleIntent.getStringExtra("state");
         mTitle.setText(title);
         mDescription.setText(description);
+        mState.setText(state);
 
 
         // action bar
