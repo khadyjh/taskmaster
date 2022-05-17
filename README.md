@@ -50,3 +50,18 @@ the user can choose number of task he want to see in home page
 # lab 31
 
 ## testing the interfaces using espresso tool 
+
+# lab 32
+
+adding amplify to the project and configure with dynamoDb
+
+## add task page 
+ adding the task detail to the cloud database
+ 
+## home page 
+make recyclerView read from the cloud 
+
+### screenshot
+
+![home page](./screenshots/lab32.png)
+![home page](./screenshots/lab32_1.png)

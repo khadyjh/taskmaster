@@ -15,14 +15,14 @@ import java.util.List;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.CustomViewHolder> {
 
-    List<Task> tasks;
+    List<com.amplifyframework.datastore.generated.model.Task> tasks;
 
     CustomClickListener listener;
 
     int taskNumber;
 
 
-    public TaskAdapter(List<Task> tasks ,CustomClickListener listener,int taskNumber) {
+    public TaskAdapter(List<com.amplifyframework.datastore.generated.model.Task> tasks ,CustomClickListener listener,int taskNumber) {
         this.tasks = tasks;
         this.listener=listener;
         this.taskNumber=taskNumber;

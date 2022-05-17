@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.core.Amplify;
 import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.Task;
 import com.codeFellow.taskmaster.repo.AppDatabase;
@@ -45,14 +47,16 @@ public class AddActivity extends AppCompatActivity {
                 String description = descriptionEditText.getText().toString();
                 String state = spinner.getSelectedItem().toString();
 
+                // method to save task to the backend cloud
+                saveDataAmplify(title,description,state);
 
+                // save to room code
+//                Task task=new Task(title,description,Enum.valueOf(State.class,state));
+//                System.out.println("******************************************  "+task);
 
-                Task task=new Task(title,description,Enum.valueOf(State.class,state));
-                System.out.println("******************************************  "+task);
-
-               long newTask = AppDatabase.getInstance(getApplicationContext()).taskDao().insertStudent(task);
-
-                Log.i(TAG, "onClick: new task added"+newTask);
+//               long newTask = AppDatabase.getInstance(getApplicationContext()).taskDao().insertStudent(task);
+//
+//                Log.i(TAG, "onClick: new task added"+newTask);
 
             }
         });
@@ -73,5 +77,29 @@ public class AddActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void saveDataAmplify(String title, String description , String state){
+
+        // get the data from ui
+        com.amplifyframework.datastore.generated.model.Task taskAmplify= com.amplifyframework.datastore.generated.model.Task
+                .builder().title(title).description(description).status(state).build();
+
+        // save the data
+        Amplify.DataStore.save(taskAmplify,
+                successful->{
+                    Log.i(TAG, "test: saved");
+                },
+                fail->{
+                    Log.e(TAG, "test: fail to save " );
+                });
+
+        // save to backend
+        Amplify.API.mutate(
+                ModelMutation.create(taskAmplify),
+                success -> Log.i(TAG, "Saved item: " + success.getData()),
+                error -> Log.e(TAG, "Could not save item to API", error)
+        );
     }
 }

@@ -20,6 +20,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.AmplifyException;
+import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.api.graphql.model.ModelMutation;
+import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.Task;
 import com.codeFellow.taskmaster.data.TaskAdapter;
@@ -43,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
     List<Task> databaseList=new ArrayList<>();
 
+
     int number;
 
 
@@ -50,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // amplify configuration
+        amplifyConfigure();
 
         //method to set task number
         setTaskNumber();
@@ -76,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
             }
         });
 
+//        getDataFromCloud();
         ///////////////////////////////////////////////////////lab27////////////////////////////////////
 //        mBtnTask1=findViewById(R.id.btn_task_1);
 //        mBtnTask2=findViewById(R.id.btn_task_2);
@@ -95,8 +106,26 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 //        });
         ///////////////////////////////////////////////////////lab28////////////////////////////////////
 
+
+//        List<com.amplifyframework.datastore.generated.model.Task> taskListFromDatabase=new ArrayList<>();
+//        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
+//                tasks -> {
+//                    while (tasks.hasNext()) {
+//                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
+//
+//                        Log.i(TAG, "Title: " + task.getTitle());
+//                        taskListFromDatabase.add(task);
+//                    }
+//                },
+//                failure -> Log.e("MyAmplifyApp", "Query failed.", failure)
+//        );
+//        Log.i(TAG, "getDataFromCloud: => ****************** " + taskListFromDatabase);
+
         // method to set recycler view adapter and to set the data from database
-        sitRecyclerView();
+        List<com.amplifyframework.datastore.generated.model.Task> tasks=getDataFromCloud();
+        sitRecyclerView(tasks);
+
+
 
 
     }
@@ -111,17 +140,18 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         // method to set username
         setName();
         // method to set recycler view adapter and to set the data from database
-        sitRecyclerView();
+        List<com.amplifyframework.datastore.generated.model.Task> tasks=getDataFromCloud();
+        sitRecyclerView(tasks);
         //method to set task number
         setTaskNumber();
-
-
+        Log.i(TAG, "onResume: ");
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setTaskNumber();
+        Log.i(TAG, "onStart: ");
 
     }
 
@@ -198,10 +228,10 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         startActivity(recycleIntent);
     }
 
-    public void sitRecyclerView(){
-        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
+    public void sitRecyclerView(List<com.amplifyframework.datastore.generated.model.Task> tasks){
+//        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
         mRecyclerView=findViewById(R.id.recycler_view_task);
-        TaskAdapter taskAdapter=new TaskAdapter(taskList,this,number);
+        TaskAdapter taskAdapter=new TaskAdapter(tasks,this,number);
         mRecyclerView.setAdapter(taskAdapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -212,4 +242,63 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
         number= Integer.parseInt(sharedPreferences.getString(SettingsActivity.NUMBER,"2"));
     }
+
+
+    public void amplifyConfigure(){
+        try {
+            Amplify.addPlugin(new AWSApiPlugin());
+            Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.configure(getApplicationContext());
+
+            Log.i(TAG, "Initialized Amplify");
+        } catch (AmplifyException e) {
+            Log.e(TAG, "Could not initialize Amplify", e);
+        }
+    }
+
+
+    public void test(){
+        // get the data
+        com.amplifyframework.datastore.generated.model.Task task= com.amplifyframework.datastore.generated.model.Task.builder().
+                title("task1")
+                .description("task3")
+                .status("new").build();
+
+        // save the data
+        Amplify.DataStore.save(task,
+                successful->{
+                    Log.i(TAG, "test: saved");
+                },
+                fail->{
+                    Log.e(TAG, "test: fail to save " );
+                });
+
+        // save to backend
+                Amplify.API.mutate(
+                ModelMutation.create(task),
+                success -> Log.i(TAG, "Saved item: " + success.getData().getTitle()),
+                error -> Log.e(TAG, "Could not save item to API", error)
+        );
+    }
+
+
+    public List<com.amplifyframework.datastore.generated.model.Task> getDataFromCloud(){
+        List<com.amplifyframework.datastore.generated.model.Task> taskListFromDatabase=new ArrayList<>();
+        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
+                tasks -> {
+                    while (tasks.hasNext()) {
+                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
+                        taskListFromDatabase.add(task);
+                        Log.i(TAG, "Title: " + task.getTitle());
+                    }
+                },
+                failure -> Log.e("MyAmplifyApp", "Query failed.", failure)
+        );
+
+
+        Log.i(TAG, "getDataFromCloud: => ****************** " + taskListFromDatabase);
+        return taskListFromDatabase;
+//        System.out.println("********************************************** " + taskListFromDatabase);
+    }
+
 }
