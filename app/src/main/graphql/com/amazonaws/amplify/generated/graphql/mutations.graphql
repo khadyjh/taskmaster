@@ -1,4 +1,94 @@
 # this is an auto generated file. This will be overwritten
+mutation CreateTeam(
+  $input: CreateTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  createTeam(input: $input, condition: $condition) {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        description
+        status
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        teamListOfTasksId
+      }
+      nextToken
+      startedAt
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
+mutation UpdateTeam(
+  $input: UpdateTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  updateTeam(input: $input, condition: $condition) {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        description
+        status
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        teamListOfTasksId
+      }
+      nextToken
+      startedAt
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
+mutation DeleteTeam(
+  $input: DeleteTeamInput!
+  $condition: ModelTeamConditionInput
+) {
+  deleteTeam(input: $input, condition: $condition) {
+    id
+    name
+    listOfTasks {
+      items {
+        id
+        title
+        description
+        status
+        createdAt
+        updatedAt
+        _version
+        _deleted
+        _lastChangedAt
+        teamListOfTasksId
+      }
+      nextToken
+      startedAt
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+  }
+}
 mutation CreateTask(
   $input: CreateTaskInput!
   $condition: ModelTaskConditionInput
@@ -13,6 +103,7 @@ mutation CreateTask(
     _version
     _deleted
     _lastChangedAt
+    teamListOfTasksId
   }
 }
 mutation UpdateTask(
@@ -29,6 +120,7 @@ mutation UpdateTask(
     _version
     _deleted
     _lastChangedAt
+    teamListOfTasksId
   }
 }
 mutation DeleteTask(
@@ -45,6 +137,7 @@ mutation DeleteTask(
     _version
     _deleted
     _lastChangedAt
+    teamListOfTasksId
   }
 }
 mutation CreateNote(

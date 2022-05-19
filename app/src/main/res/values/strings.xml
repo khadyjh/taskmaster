@@ -23,4 +23,8 @@
         <item>ASSIGNED</item>
         <item>NEW</item>
     </array>
+    <array name="team">
+
+        <item>team3</item>
+    </array>
 </resources>
