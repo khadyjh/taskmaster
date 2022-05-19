@@ -63,6 +63,15 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:entries="@array/state_spinner"
+        android:spinnerMode="dropdown"
+        />
+
+    <Spinner
+        android:id="@+id/spinnerTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:spinnerMode="dropdown"
         />
 
     <Button

@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -26,10 +29,11 @@ import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
-import com.codeFellow.taskmaster.data.State;
-import com.codeFellow.taskmaster.data.Task;
+
+import com.amplifyframework.datastore.generated.model.Task;
+import com.amplifyframework.datastore.generated.model.Team;
 import com.codeFellow.taskmaster.data.TaskAdapter;
-import com.codeFellow.taskmaster.repo.AppDatabase;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,12 +49,14 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
     RecyclerView mRecyclerView;
 
-    List<Task> taskList=new ArrayList<>();
+//    List<Task> taskList=new ArrayList<>();
 
-    List<Task> databaseList=new ArrayList<>();
-
+    List<Task> taskListFromDatabase=new ArrayList<>();
 
     int number;
+
+    // handler
+    private Handler handler;
 
 
     @Override
@@ -58,8 +64,21 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         // amplify configuration
         amplifyConfigure();
+
+        //
+        getDataFromCloud();
+
+        handler=new Handler(Looper.getMainLooper(),msg->{
+//            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onCreate: "+msg.getData().get("task")+"*********");
+            taskListFromDatabase.add((Task) msg.getData().get("task"));
+
+            return true;
+        });
+
 
         //method to set task number
         setTaskNumber();
@@ -107,25 +126,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         ///////////////////////////////////////////////////////lab28////////////////////////////////////
 
 
-//        List<com.amplifyframework.datastore.generated.model.Task> taskListFromDatabase=new ArrayList<>();
-//        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
-//                tasks -> {
-//                    while (tasks.hasNext()) {
-//                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
-//
-//                        Log.i(TAG, "Title: " + task.getTitle());
-//                        taskListFromDatabase.add(task);
-//                    }
-//                },
-//                failure -> Log.e("MyAmplifyApp", "Query failed.", failure)
-//        );
-//        Log.i(TAG, "getDataFromCloud: => ****************** " + taskListFromDatabase);
 
         // method to set recycler view adapter and to set the data from database
-        List<com.amplifyframework.datastore.generated.model.Task> tasks=getDataFromCloud();
-        sitRecyclerView(tasks);
+
+        sitRecyclerView();
 
 
+        // create 3 teams
+//        test();
+        
 
 
     }
@@ -139,20 +148,53 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         super.onResume();
         // method to set username
         setName();
+
+        getDataFromCloud();
+
+        handler=new Handler(Looper.getMainLooper(),msg->{
+            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onStart: "+msg.getData().get("task")+"*********");
+            taskListFromDatabase.add((Task) msg.getData().get("task"));
+            return true;
+        });
         // method to set recycler view adapter and to set the data from database
-        List<com.amplifyframework.datastore.generated.model.Task> tasks=getDataFromCloud();
-        sitRecyclerView(tasks);
+        sitRecyclerView();
         //method to set task number
         setTaskNumber();
-        Log.i(TAG, "onResume: ");
+        Log.i(TAG, "onResume:hello ");
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setTaskNumber();
+        getDataFromCloud();
+
+        handler=new Handler(Looper.getMainLooper(),msg->{
+            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onStart: "+msg.getData().get("task")+"*********");
+            taskListFromDatabase.add((Task) msg.getData().get("task"));
+            return true;
+        });
+        sitRecyclerView();
         Log.i(TAG, "onStart: ");
 
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        getDataFromCloud();
+
+        handler=new Handler(Looper.getMainLooper(),msg->{
+            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
+            Log.i(TAG, "onReStart: "+msg.getData().get("task")+"*********");
+            taskListFromDatabase.add((Task) msg.getData().get("task"));
+            return true;
+        });
+        sitRecyclerView();
     }
 
     @Override
@@ -206,32 +248,32 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
     ///////////////////////////////////////////////////////lab28////////////////////////////////////
     public void fitchData(){
-        taskList.add(new Task("task1","hello from task1 ", State.NEW));
-        taskList.add(new Task("task2","hello from task2", State.ASSIGNED));
-        taskList.add(new Task("task3","hello from task3", State.IN_PROGRESS));
-        taskList.add(new Task("task4","hello from task4", State.COMPLETE));
-        taskList.add(new Task("task5","hello from task5", State.ASSIGNED));
-        taskList.add(new Task("task6","hello from task6", State.NEW));
-        taskList.add(new Task("task7","hello from task7", State.NEW));
-        taskList.add(new Task("task8","hello from task8", State.NEW));
-        taskList.add(new Task("task9","hello from task9", State.NEW));
-        taskList.add(new Task("task10","hello from task10", State.NEW));
+//        taskList.add(new Task("task1","hello from task1 ", State.NEW));
+//        taskList.add(new Task("task2","hello from task2", State.ASSIGNED));
+//        taskList.add(new Task("task3","hello from task3", State.IN_PROGRESS));
+//        taskList.add(new Task("task4","hello from task4", State.COMPLETE));
+//        taskList.add(new Task("task5","hello from task5", State.ASSIGNED));
+//        taskList.add(new Task("task6","hello from task6", State.NEW));
+//        taskList.add(new Task("task7","hello from task7", State.NEW));
+//        taskList.add(new Task("task8","hello from task8", State.NEW));
+//        taskList.add(new Task("task9","hello from task9", State.NEW));
+//        taskList.add(new Task("task10","hello from task10", State.NEW));
     }
 
     @Override
     public void onOneTaskClicked(int position) {
         Intent recycleIntent=new Intent(getApplicationContext(),TaskDetailActivity.class);
-        recycleIntent.putExtra("title",taskList.get(position).getTitle());
-        recycleIntent.putExtra("description",taskList.get(position).getBody());
-        recycleIntent.putExtra("state",taskList.get(position).getState().toString());
-        System.out.println("*********************************** "+taskList.get(position).getState());
+        recycleIntent.putExtra("title",taskListFromDatabase.get(position).getTitle());
+        recycleIntent.putExtra("description",taskListFromDatabase.get(position).getDescription());
+        recycleIntent.putExtra("state",taskListFromDatabase.get(position).getStatus());
+//        System.out.println("*********************************** "+taskList.get(position).getState());
         startActivity(recycleIntent);
     }
 
-    public void sitRecyclerView(List<com.amplifyframework.datastore.generated.model.Task> tasks){
+    public void sitRecyclerView(){
 //        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
         mRecyclerView=findViewById(R.id.recycler_view_task);
-        TaskAdapter taskAdapter=new TaskAdapter(tasks,this,number);
+        TaskAdapter taskAdapter=new TaskAdapter(taskListFromDatabase,this,number);
         mRecyclerView.setAdapter(taskAdapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -257,15 +299,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     }
 
 
-    public void test(){
+    public void setTeams(){
         // get the data
-        com.amplifyframework.datastore.generated.model.Task task= com.amplifyframework.datastore.generated.model.Task.builder().
-                title("task1")
-                .description("task3")
-                .status("new").build();
+        Team team=Team.builder().name("team1").build();
+
 
         // save the data
-        Amplify.DataStore.save(task,
+        Amplify.DataStore.save(team,
                 successful->{
                     Log.i(TAG, "test: saved");
                 },
@@ -275,20 +315,63 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
         // save to backend
                 Amplify.API.mutate(
-                ModelMutation.create(task),
-                success -> Log.i(TAG, "Saved item: " + success.getData().getTitle()),
+                ModelMutation.create(team),
+                success -> Log.i(TAG, "Saved item: " + success.getData().getName()),
+                error -> Log.e(TAG, "Could not save item to API", error)
+        );
+        // get the data
+        Team team2=Team.builder().name("team2").build();
+
+        // save the data
+        Amplify.DataStore.save(team2,
+                successful->{
+                    Log.i(TAG, "test: saved");
+                },
+                fail->{
+                    Log.e(TAG, "test: fail to save " );
+                });
+
+        // save to backend
+        Amplify.API.mutate(
+                ModelMutation.create(team2),
+                success -> Log.i(TAG, "Saved item: " + success.getData().getName()),
+                error -> Log.e(TAG, "Could not save item to API", error)
+        );
+
+        // get the data
+        Team team3=Team.builder().name("team2").build();
+
+        // save the data
+        Amplify.DataStore.save(team3,
+                successful->{
+                    Log.i(TAG, "test: saved");
+                },
+                fail->{
+                    Log.e(TAG, "test: fail to save " );
+                });
+
+        // save to backend
+        Amplify.API.mutate(
+                ModelMutation.create(team3),
+                success -> Log.i(TAG, "Saved item: " + success.getData().getName()),
                 error -> Log.e(TAG, "Could not save item to API", error)
         );
     }
 
 
-    public List<com.amplifyframework.datastore.generated.model.Task> getDataFromCloud(){
-        List<com.amplifyframework.datastore.generated.model.Task> taskListFromDatabase=new ArrayList<>();
-        Amplify.DataStore.query(com.amplifyframework.datastore.generated.model.Task.class,
+    public void getDataFromCloud(){
+        Amplify.DataStore.query(Task.class,
                 tasks -> {
                     while (tasks.hasNext()) {
-                        com.amplifyframework.datastore.generated.model.Task task = tasks.next();
-                        taskListFromDatabase.add(task);
+                        Task task = tasks.next();
+                        //
+                        Bundle bundle=new Bundle();
+//                        bundle.putString("title",task.getTitle());
+                        bundle.putParcelable("task",task);
+                        Message message=new Message();
+                        message.setData(bundle);
+                        handler.sendMessage(message);
+                        //
                         Log.i(TAG, "Title: " + task.getTitle());
                     }
                 },
@@ -296,9 +379,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         );
 
 
-        Log.i(TAG, "getDataFromCloud: => ****************** " + taskListFromDatabase);
-        return taskListFromDatabase;
-//        System.out.println("********************************************** " + taskListFromDatabase);
+//        return taskListFromDatabase;
+
+    }
+
+
+    public void delete(){
+
+
+
     }
 
 }

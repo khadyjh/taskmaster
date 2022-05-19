@@ -13,11 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:layout_marginTop="176dp"
         android:hint="@string/lbl_inter_your_name"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_task_num"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="44dp" />
+        app:layout_constraintVertical_bias="0.131"
+        tools:layout_editor_absoluteX="-19dp" />
 
     <EditText
         android:id="@+id/edit_text_task_num"
@@ -27,14 +27,15 @@
         android:hint="@string/lbl_inter_task_num"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="24dp" />
+        app:layout_constraintVertical_bias="0.383"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/btn_submit_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:text="@string/lbl_submit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.501"
@@ -52,6 +53,33 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_text_name"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Spinner
+        android:id="@+id/spinnerTeam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_submit_num"
+        app:layout_constraintVertical_bias="0.15"
+        tools:layout_editor_absoluteX="0dp"
+        android:entries="@array/team"
+        android:spinnerMode="dropdown">
+
+    </Spinner>
+
+    <Button
+        android:id="@+id/btn_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="@string/lbl_submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerTeam"
+        app:layout_constraintVertical_bias="0.067" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

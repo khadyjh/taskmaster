@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codeFellow.taskmaster">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,9 +21,9 @@
         <activity
             android:name=".TaskDetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".UI.AddActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".AddActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ThirdActivity"
             android:exported="false" />

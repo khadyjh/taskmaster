@@ -22,6 +22,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.CustomViewHold
     int taskNumber;
 
 
+
     public TaskAdapter(List<com.amplifyframework.datastore.generated.model.Task> tasks ,CustomClickListener listener,int taskNumber) {
         this.tasks = tasks;
         this.listener=listener;
@@ -39,6 +40,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.CustomViewHold
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         holder.title.setText(tasks.get(position).getTitle());
+//        holder.title.setText(tasks.get(position));
 
     }
 

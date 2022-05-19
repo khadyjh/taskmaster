@@ -65,3 +65,10 @@ make recyclerView read from the cloud
 
 ![home page](./screenshots/lab32.png)
 ![home page](./screenshots/lab32_1.png)
+
+
+# lab 33
+adding relation to the database model like **hasMany**
+
+### screenshot
+![taskTable](./screenshots/lab33.png)
