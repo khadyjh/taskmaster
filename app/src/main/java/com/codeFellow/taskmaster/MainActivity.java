@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
@@ -32,6 +33,7 @@ import com.amplifyframework.datastore.AWSDataStorePlugin;
 
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
+import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.TaskAdapter;
 
 
@@ -46,17 +48,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 //        Button mBtnTask2;
 //        Button mBtnTask3;
     TextView mUserNameView;
-
     RecyclerView mRecyclerView;
-
-//    List<Task> taskList=new ArrayList<>();
-
+    List<Task> taskList=new ArrayList<>();
     List<Task> taskListFromDatabase=new ArrayList<>();
-
     int number;
-
     // handler
     private Handler handler;
+    private String mTeam;
 
 
     @Override
@@ -69,13 +67,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         amplifyConfigure();
 
         //
-        getDataFromCloud();
+//        getDataFromCloud();
 
+        costumeTeam();
         handler=new Handler(Looper.getMainLooper(),msg->{
 //            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "onCreate: "+msg.getData().get("task")+"*********");
+//            Log.i(TAG, "onCreate: "+msg.getData().get("task"));
+//            Log.i(TAG, "onCreate: "+msg.getData().get("list"));
             taskListFromDatabase.add((Task) msg.getData().get("task"));
 
+            sitRecyclerView(taskList);
             return true;
         });
 
@@ -129,12 +130,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
         // method to set recycler view adapter and to set the data from database
 
-        sitRecyclerView();
+
 
 
         // create 3 teams
 //        test();
-        
+
+
+        setTeamName();
+//        Log.i(TAG, "onCreate: start => " + taskList);
 
 
     }
@@ -148,20 +152,17 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         super.onResume();
         // method to set username
         setName();
-
-        getDataFromCloud();
-
-        handler=new Handler(Looper.getMainLooper(),msg->{
-            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "onStart: "+msg.getData().get("task")+"*********");
-            taskListFromDatabase.add((Task) msg.getData().get("task"));
-            return true;
-        });
+        // method to set team name
+        setTeamName();
         // method to set recycler view adapter and to set the data from database
-        sitRecyclerView();
+        sitRecyclerView(taskList);
         //method to set task number
         setTaskNumber();
-        Log.i(TAG, "onResume:hello ");
+
+        costumeTeam();
+
+//        Log.i(TAG, "onResume:hello => "+ mTeam +" " + taskList);
+
 
     }
 
@@ -169,32 +170,19 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     protected void onStart() {
         super.onStart();
         setTaskNumber();
-        getDataFromCloud();
+        sitRecyclerView(taskList);
+        costumeTeam();
+//        Log.i(TAG, "onStart:start => "+ taskList);
 
-        handler=new Handler(Looper.getMainLooper(),msg->{
-            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "onStart: "+msg.getData().get("task")+"*********");
-            taskListFromDatabase.add((Task) msg.getData().get("task"));
-            return true;
-        });
-        sitRecyclerView();
-        Log.i(TAG, "onStart: ");
 
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
-        getDataFromCloud();
-
-        handler=new Handler(Looper.getMainLooper(),msg->{
-            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
-            Log.i(TAG, "onReStart: "+msg.getData().get("task")+"*********");
-            taskListFromDatabase.add((Task) msg.getData().get("task"));
-            return true;
-        });
-        sitRecyclerView();
+        sitRecyclerView(taskList);
+        costumeTeam();
+//        Log.i(TAG, "onRestart: start => " + taskList);
     }
 
     @Override
@@ -263,17 +251,16 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     @Override
     public void onOneTaskClicked(int position) {
         Intent recycleIntent=new Intent(getApplicationContext(),TaskDetailActivity.class);
-        recycleIntent.putExtra("title",taskListFromDatabase.get(position).getTitle());
-        recycleIntent.putExtra("description",taskListFromDatabase.get(position).getDescription());
-        recycleIntent.putExtra("state",taskListFromDatabase.get(position).getStatus());
-//        System.out.println("*********************************** "+taskList.get(position).getState());
+        recycleIntent.putExtra("title",taskList.get(position).getTitle());
+        recycleIntent.putExtra("description",taskList.get(position).getDescription());
+        recycleIntent.putExtra("state",taskList.get(position).getStatus());
         startActivity(recycleIntent);
     }
 
-    public void sitRecyclerView(){
+    public void sitRecyclerView(List<Task> task){
 //        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
         mRecyclerView=findViewById(R.id.recycler_view_task);
-        TaskAdapter taskAdapter=new TaskAdapter(taskListFromDatabase,this,number);
+        TaskAdapter taskAdapter=new TaskAdapter(taskList,this,number);
         mRecyclerView.setAdapter(taskAdapter);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -285,6 +272,13 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         number= Integer.parseInt(sharedPreferences.getString(SettingsActivity.NUMBER,"2"));
     }
 
+    @SuppressLint("SetTextI18n")
+    public void setTeamName(){
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        mTeam = sharedPreferences.getString(SettingsActivity.TEAM_NAME,"team1");
+//        Log.i(TAG, "setTeamName: team name =>"+mTeam);
+    }
+
 
     public void amplifyConfigure(){
         try {
@@ -292,14 +286,15 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.configure(getApplicationContext());
 
-            Log.i(TAG, "Initialized Amplify");
+//            Log.i(TAG, "Initialized Amplify");
         } catch (AmplifyException e) {
-            Log.e(TAG, "Could not initialize Amplify", e);
+//            Log.e(TAG, "Could not initialize Amplify", e);
         }
     }
 
 
     public void setTeams(){
+        //team 1
         // get the data
         Team team=Team.builder().name("team1").build();
 
@@ -319,6 +314,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                 success -> Log.i(TAG, "Saved item: " + success.getData().getName()),
                 error -> Log.e(TAG, "Could not save item to API", error)
         );
+
+        //team 2
         // get the data
         Team team2=Team.builder().name("team2").build();
 
@@ -338,8 +335,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                 error -> Log.e(TAG, "Could not save item to API", error)
         );
 
+        //team 3
         // get the data
-        Team team3=Team.builder().name("team2").build();
+        Team team3=Team.builder().name("team3").build();
 
         // save the data
         Amplify.DataStore.save(team3,
@@ -371,23 +369,45 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                         Message message=new Message();
                         message.setData(bundle);
                         handler.sendMessage(message);
-                        //
-                        Log.i(TAG, "Title: " + task.getTitle());
+
+//                        Log.i(TAG, "Title: " + task.getTitle());
+//                        runOnUiThread(()->{
+//                            taskListFromDatabase.add(task);
+//                        });
                     }
                 },
-                failure -> Log.e("MyAmplifyApp", "Query failed.", failure)
+                failure -> Log.e(TAG, "Query failed.", failure)
         );
-
-
-//        return taskListFromDatabase;
-
     }
 
 
-    public void delete(){
+    public void costumeTeam(){
+        Amplify.API.query(
+                ModelQuery.list(Team.class, Team.NAME.eq(mTeam)),
+                response -> {
+                    for (Team todo : response.getData()) {
+                        //
+                        Bundle bundle=new Bundle();
+                        bundle.putString("name",todo.getName());
+                        bundle.putParcelable("team",todo);
+                        bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) todo.getListOfTasks());
+                        Message message=new Message();
+                        message.setData(bundle);
+                        handler.sendMessage(message);
+                        //
 
+                        taskList=todo.getListOfTasks();
+//                        System.out.println(taskList+"===========================================");
 
+//                        Log.i(TAG, todo.getName());
 
+                    }
+
+                },
+                error -> {
+//                        Log.e(TAG, "Query failure", error)
+                }
+        );
     }
 
 }

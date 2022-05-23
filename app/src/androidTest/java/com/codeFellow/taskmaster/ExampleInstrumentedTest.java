@@ -10,6 +10,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -21,7 +22,9 @@ import static androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtP
 
 import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 
+import static androidx.test.espresso.contrib.RecyclerViewActions.scrollTo;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isSelected;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
@@ -31,6 +34,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.Matchers.anything;
 import static org.junit.Assert.*;
 
 import com.codeFellow.taskmaster.repo.AppDatabase;
@@ -84,6 +88,9 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.btnAddTask)).perform(click());
         onView(withId(R.id.taskTitleEditTxt)).perform(typeText("task10"));
         onView(withId(R.id.taskDescriptionEditTxt)).perform(typeText("task10"));
+       //spinner
+        onView(withId(R.id.spinnerTeam)).perform(click());
+        onData(anything()).atPosition(0).perform(click());
 
         onView(withId(R.id.addButton)).perform(click());
     }
