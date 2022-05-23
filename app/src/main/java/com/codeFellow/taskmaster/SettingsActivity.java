@@ -31,6 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final String NAME = "name";
     public static final String NUMBER = "number";
+    public static final String TEAM_NAME = "teamName";
     private static final String TAG = SettingsActivity.class.getSimpleName();
 
     private Handler handler;
@@ -39,8 +40,12 @@ public class SettingsActivity extends AppCompatActivity {
 
     EditText mNameEditText;
     EditText mTaskNumEditText;
+    Spinner mTeamSpinner;
     Button mSubmitButton;
     Button mSubmitNumberButton;
+    Button mSubmitTeamButton;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,29 +53,31 @@ public class SettingsActivity extends AppCompatActivity {
 
         mNameEditText=findViewById(R.id.edit_text_name);
         mTaskNumEditText=findViewById(R.id.edit_text_task_num);
+        mTeamSpinner=findViewById(R.id.spinnerTeam);
         mSubmitButton=findViewById(R.id.btn_submit);
         mSubmitNumberButton=findViewById(R.id.btn_submit_num);
+        mSubmitTeamButton=findViewById(R.id.btn_team);
 
 //        getDataFromCloud();
         // handler
-        handler=new Handler(Looper.getMainLooper(), msg->{
-            Log.i(TAG, "onCreate: "+msg.getData().get("team")+"*********");
-            teamsList.add((Team) msg.getData().get("team"));
-            teams.add(msg.getData().get("name").toString());
-            return true;
-        });
-
-        // set data to the spinner
-        Spinner teamSpinner=findViewById(R.id.spinnerTeam);
-
-        ArrayAdapter<String> teamAdapter= new ArrayAdapter<String>(
-                this,
-                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-                teams
-        );
-
-        teamAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
-        teamSpinner.setAdapter(teamAdapter);
+//        handler=new Handler(Looper.getMainLooper(), msg->{
+//            Log.i(TAG, "onCreate: "+msg.getData().get("team")+"*********");
+//            teamsList.add((Team) msg.getData().get("team"));
+//            teams.add(msg.getData().get("name").toString());
+//            return true;
+//        });
+//
+//        // set data to the spinner
+//        Spinner teamSpinner=findViewById(R.id.spinnerTeam);
+//
+//        ArrayAdapter<String> teamAdapter= new ArrayAdapter<String>(
+//                this,
+//                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
+//                teams
+//        );
+//
+//        teamAdapter.setDropDownViewResource(androidx.appcompat.R.layout.support_simple_spinner_dropdown_item);
+//        teamSpinner.setAdapter(teamAdapter);
 
 
         ///
@@ -108,7 +115,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-
+        mSubmitTeamButton.setOnClickListener(view -> {
+            saveTeamName();
+        });
         // action bar
         ActionBar actionBar=getSupportActionBar();
 
@@ -158,6 +167,21 @@ public class SettingsActivity extends AppCompatActivity {
         Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
     }
 
+    public void saveTeamName(){
+        // get the name
+        String teamName=mTeamSpinner.getSelectedItem().toString();
+
+
+        //create sharedPreference object
+        SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor preferenceEditor=sharedPreferences.edit();
+
+        preferenceEditor.putString(TEAM_NAME,teamName);
+        preferenceEditor.apply();
+
+        Toast.makeText(this, "saved", Toast.LENGTH_SHORT).show();
+    }
+
     public void getDataFromCloud(){
 //        Amplify.DataStore.query(Team.class,
 //                teams -> {
@@ -189,11 +213,13 @@ public class SettingsActivity extends AppCompatActivity {
                         message.setData(bundle);
                         handler.sendMessage(message);
                         //
-                        Log.i("MyAmplifyApp", todo.getName()+"55555555555555555555555555555555555");
+//                        Log.i("MyAmplifyApp", todo.getName()+"55555555555555555555555555555555555");
 
                     }
                 },
-                error -> Log.e("MyAmplifyApp", "Query failure", error)
+                error ->{
+//                Log.e("MyAmplifyApp", "Query failure", error)
+               }
         );
 
 
@@ -228,7 +254,9 @@ public class SettingsActivity extends AppCompatActivity {
                         stateSelectorTeam.setAdapter(spinnerAdapterTeam);
                     });
                 },
-                error -> Log.e(TAG, "Query failure", error)
+                error -> {
+//                        Log.e(TAG, "Query failure", error)
+                }
         );
     }
 }

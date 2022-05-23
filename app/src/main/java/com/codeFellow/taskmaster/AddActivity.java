@@ -47,12 +47,12 @@ public class AddActivity extends AppCompatActivity {
 
 //        getDataFromCloud();
         // handler
-        handler=new Handler(Looper.getMainLooper(), msg->{
-            Log.i(TAG, "onCreate: "+msg.getData().get("team")+"*********");
-            teamsList.add((Team) msg.getData().get("team"));
-            teams.add(msg.getData().get("name").toString());
-            return true;
-        });
+//        handler=new Handler(Looper.getMainLooper(), msg->{
+//            Log.i(TAG, "onCreate: "+msg.getData().get("team")+"*********");
+//            teamsList.add((Team) msg.getData().get("team"));
+//            teams.add(msg.getData().get("name").toString());
+//            return true;
+//        });
 
 
 
@@ -104,6 +104,7 @@ public class AddActivity extends AppCompatActivity {
 //
 //                Log.i(TAG, "onClick: new task added"+newTask);
 
+                // back to main page after task is saved
                 Intent backToMain=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(backToMain);
 
@@ -131,6 +132,7 @@ public class AddActivity extends AppCompatActivity {
 
     public void saveDataAmplify(String title, String description , String state,String team){
 
+        // lab 32
 
         // get the data from ui
 //       Task taskAmplify= Task
@@ -152,7 +154,7 @@ public class AddActivity extends AppCompatActivity {
 //                error -> Log.e(TAG, "Could not save item to API", error)
 //        );
 
-
+        // lab 33
         Amplify.API.query(
                 ModelQuery.list(Team.class, Team.NAME.contains("t")),
                 response -> {
@@ -169,30 +171,38 @@ public class AddActivity extends AppCompatActivity {
                           // save the data
                           Amplify.DataStore.save(taskAmplify1,
                                   successful->{
-                                      Log.i(TAG, "test: saved");
+//                                      Log.i(TAG, "test: saved");
                                   },
                                   fail->{
-                                      Log.e(TAG, "test: fail to save " );
+//                                      Log.e(TAG, "test: fail to save " );
                                   });
 
                           // save to backend
                           Amplify.API.mutate(
                                   ModelMutation.create(taskAmplify1),
-                                  success -> Log.i(TAG, "Saved item: " + success.getData()),
-                                  error -> Log.e(TAG, "Could not save item to API", error)
+                                  success -> {
+//                                          Log.i(TAG, "Saved item: " + success.getData())
+                                  },
+                                  error -> {
+//                                          Log.e(TAG, "Could not save item to API", error)
+                                  }
                           );
                       }
                         //
-                        Log.i("WELCOME", todo.getName()+"55555555555555555555555555555555555");
+//                        Log.i("WELCOME", todo.getName()+"55555555555555555555555555555555555");
 
                     }
                 },
-                error -> Log.e("MyAmplifyApp", "Query failure", error)
+                error -> {
+//                        Log.e("MyAmplifyApp", "Query failure", error)
+                }
         );
     }
 
 
+    // for handler
     public void getDataFromCloud(){
+        // data from local datastore
 //        Amplify.DataStore.query(Team.class,
 //                teams -> {
 //                    while (teams.hasNext()) {
@@ -214,6 +224,7 @@ public class AddActivity extends AppCompatActivity {
 
 //        return taskListFromDatabase;
 
+        // data from api
         Amplify.API.query(
                 ModelQuery.list(Team.class, Team.NAME.contains("t")),
                 response -> {
@@ -226,15 +237,18 @@ public class AddActivity extends AppCompatActivity {
                         message.setData(bundle);
                         handler.sendMessage(message);
                         //
-                        Log.i("MyAmplifyApp", todo.getName()+"55555555555555555555555555555555555");
+//                        Log.i("MyAmplifyApp", todo.getName()+"55555555555555555555555555555555555");
 
                     }
                 },
-                error -> Log.e("MyAmplifyApp", "Query failure", error)
+                error -> {
+//                        Log.e("MyAmplifyApp", "Query failure", error)
+                }
         );
 
     }
 
+    // configure spinner and git teams data from cloud
     public void spinner(){
         Amplify.API.query(
                 ModelQuery.list(Team.class),
@@ -260,7 +274,9 @@ public class AddActivity extends AppCompatActivity {
                         teamSelector.setAdapter(spinnerAdapterTeam);
                     });
                 },
-                error -> Log.e(TAG, "Query failure", error)
+                error -> {
+//                        Log.e(TAG, "Query failure", error)
+                }
         );
     }
 }
