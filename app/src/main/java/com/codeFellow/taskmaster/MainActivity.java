@@ -28,6 +28,7 @@ import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.api.graphql.model.ModelMutation;
 import com.amplifyframework.api.graphql.model.ModelQuery;
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 
@@ -62,21 +63,24 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mUserNameView=findViewById(R.id.text_view_my_task);
 
         // amplify configuration
-        amplifyConfigure();
-
+//        amplifyConfigure();
         //
 //        getDataFromCloud();
 
+        authAttribute();
         costumeTeam();
         handler=new Handler(Looper.getMainLooper(),msg->{
 //            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
 //            Log.i(TAG, "onCreate: "+msg.getData().get("task"));
 //            Log.i(TAG, "onCreate: "+msg.getData().get("list"));
+            Log.i(TAG, "onCreate:************************************** "+msg.getData().get("name"));
+            mUserNameView.setText((String)msg.getData().get("name"));
             taskListFromDatabase.add((Task) msg.getData().get("task"));
 
-            sitRecyclerView(taskList);
+            sitRecyclerView();
             return true;
         });
 
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         Button allTaskButton=findViewById(R.id.btnAllTask);
         Button addTaskButton=findViewById(R.id.btnAddTask);
 
-        mUserNameView=findViewById(R.id.text_view_my_task);
+
 
         allTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,13 +159,22 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         // method to set team name
         setTeamName();
         // method to set recycler view adapter and to set the data from database
-        sitRecyclerView(taskList);
+
         //method to set task number
         setTaskNumber();
 
         costumeTeam();
+        sitRecyclerView();
 
 //        Log.i(TAG, "onResume:hello => "+ mTeam +" " + taskList);
+
+        authAttribute();
+        handler=new Handler(Looper.getMainLooper(),msg->{
+            Log.i(TAG, "onCreate:************************************** "+msg.getData().get("name"));
+            mUserNameView.setText((String)msg.getData().get("name"));
+            sitRecyclerView();
+            return true;
+        });
 
 
     }
@@ -170,8 +183,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     protected void onStart() {
         super.onStart();
         setTaskNumber();
-        sitRecyclerView(taskList);
         costumeTeam();
+        sitRecyclerView();
 //        Log.i(TAG, "onStart:start => "+ taskList);
 
 
@@ -180,8 +193,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     @Override
     protected void onRestart() {
         super.onRestart();
-        sitRecyclerView(taskList);
         costumeTeam();
+        sitRecyclerView();
 //        Log.i(TAG, "onRestart: start => " + taskList);
     }
 
@@ -191,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -199,6 +213,9 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                 return true;
             case R.id.action_copyright:
                 Toast.makeText(this, "Copyright 2022", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_log_out:
+                logout();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -257,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         startActivity(recycleIntent);
     }
 
-    public void sitRecyclerView(List<Task> task){
+    public void sitRecyclerView(){
 //        taskList = AppDatabase.getInstance(getApplicationContext()).taskDao().getAll();
         mRecyclerView=findViewById(R.id.recycler_view_task);
         TaskAdapter taskAdapter=new TaskAdapter(taskList,this,number);
@@ -284,6 +301,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         try {
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.addPlugin(new AWSDataStorePlugin());
+            Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.configure(getApplicationContext());
 
 //            Log.i(TAG, "Initialized Amplify");
@@ -382,31 +400,75 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
 
     public void costumeTeam(){
+        if(mTeam==null){
+            mTeam="team1";
+        }
         Amplify.API.query(
                 ModelQuery.list(Team.class, Team.NAME.eq(mTeam)),
                 response -> {
                     for (Team todo : response.getData()) {
                         //
-                        Bundle bundle=new Bundle();
-                        bundle.putString("name",todo.getName());
-                        bundle.putParcelable("team",todo);
-                        bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) todo.getListOfTasks());
-                        Message message=new Message();
-                        message.setData(bundle);
-                        handler.sendMessage(message);
+                      //  Bundle bundle=new Bundle();
+                    //    bundle.putString("name",todo.getName());
+                     //   bundle.putParcelable("team",todo);
+                       // bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) todo.getListOfTasks());
+                       // Message message=new Message();
+                       //message.setData(bundle);
+                     //   handler.sendMessage(message);
                         //
 
                         taskList=todo.getListOfTasks();
 //                        System.out.println(taskList+"===========================================");
 
-//                        Log.i(TAG, todo.getName());
+                        Log.i(TAG, todo.getName()+"^^^^^^^**************************************");
 
                     }
 
                 },
-                error -> {
-//                        Log.e(TAG, "Query failure", error)
-                }
+                error -> Log.e(TAG, "Query failure", error)
+
+        );
+    }
+
+
+    // Logout AWS
+    private void logout() {
+        Amplify.Auth.signOut(
+                () -> {
+                    Log.i(TAG, "Signed out successfully");
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    authSession("logout");
+                    finish();
+                },
+                error -> Log.e(TAG, error.toString())
+        );
+    }
+
+
+    private void authSession(String method) {
+        Amplify.Auth.fetchAuthSession(
+                result -> {
+                    Log.i(TAG, "Auth Session => " + method +" "+ result.toString());
+                },
+                error -> Log.e(TAG, error.toString())
+        );
+    }
+
+    // Get Auth Attribute
+    private void authAttribute(){
+        Amplify.Auth.fetchUserAttributes(
+                attributes -> {
+                    Log.i(TAG, "User attributes = " + attributes.get(2).getValue());
+                    //  Send message to the handler to show the User name >>
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name",  attributes.get(2).getValue());
+
+                    Message message = new Message();
+                    message.setData(bundle);
+
+                    handler.sendMessage(message);
+                },
+                error -> Log.e(TAG, "Failed to fetch user attributes.", error)
         );
     }
 
