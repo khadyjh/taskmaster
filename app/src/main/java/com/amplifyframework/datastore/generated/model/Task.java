@@ -27,11 +27,13 @@ public final class Task implements Model, Parcelable {
   public static final QueryField TITLE = field("Task", "title");
   public static final QueryField DESCRIPTION = field("Task", "description");
   public static final QueryField STATUS = field("Task", "status");
+  public static final QueryField IMAGE = field("Task", "image");
   public static final QueryField TEAM_LIST_OF_TASKS_ID = field("Task", "teamListOfTasksId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String description;
   private final @ModelField(targetType="String") String status;
+  private final @ModelField(targetType="String") String image;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   private final @ModelField(targetType="ID") String teamListOfTasksId;
@@ -51,6 +53,10 @@ public final class Task implements Model, Parcelable {
       return status;
   }
   
+  public String getImage() {
+      return image;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -63,11 +69,12 @@ public final class Task implements Model, Parcelable {
       return teamListOfTasksId;
   }
   
-  private Task(String id, String title, String description, String status, String teamListOfTasksId) {
+  private Task(String id, String title, String description, String status, String image, String teamListOfTasksId) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.status = status;
+    this.image = image;
     this.teamListOfTasksId = teamListOfTasksId;
   }
   
@@ -83,6 +90,7 @@ public final class Task implements Model, Parcelable {
               ObjectsCompat.equals(getTitle(), task.getTitle()) &&
               ObjectsCompat.equals(getDescription(), task.getDescription()) &&
               ObjectsCompat.equals(getStatus(), task.getStatus()) &&
+              ObjectsCompat.equals(getImage(), task.getImage()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt()) &&
               ObjectsCompat.equals(getTeamListOfTasksId(), task.getTeamListOfTasksId());
@@ -96,6 +104,7 @@ public final class Task implements Model, Parcelable {
       .append(getTitle())
       .append(getDescription())
       .append(getStatus())
+      .append(getImage())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .append(getTeamListOfTasksId())
@@ -111,6 +120,7 @@ public final class Task implements Model, Parcelable {
       .append("title=" + String.valueOf(getTitle()) + ", ")
       .append("description=" + String.valueOf(getDescription()) + ", ")
       .append("status=" + String.valueOf(getStatus()) + ", ")
+      .append("image=" + String.valueOf(getImage()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()) + ", ")
       .append("teamListOfTasksId=" + String.valueOf(getTeamListOfTasksId()))
@@ -136,6 +146,7 @@ public final class Task implements Model, Parcelable {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -145,6 +156,7 @@ public final class Task implements Model, Parcelable {
       title,
       description,
       status,
+      image,
       teamListOfTasksId);
   }
 
@@ -168,6 +180,7 @@ public final class Task implements Model, Parcelable {
     BuildStep id(String id);
     BuildStep description(String description);
     BuildStep status(String status);
+    BuildStep image(String image);
     BuildStep teamListOfTasksId(String teamListOfTasksId);
   }
   
@@ -177,6 +190,7 @@ public final class Task implements Model, Parcelable {
     private String title;
     private String description;
     private String status;
+    private String image;
     private String teamListOfTasksId;
     @Override
      public Task build() {
@@ -187,6 +201,7 @@ public final class Task implements Model, Parcelable {
           title,
           description,
           status,
+          image,
           teamListOfTasksId);
     }
     
@@ -210,6 +225,12 @@ public final class Task implements Model, Parcelable {
     }
     
     @Override
+     public BuildStep image(String image) {
+        this.image = image;
+        return this;
+    }
+    
+    @Override
      public BuildStep teamListOfTasksId(String teamListOfTasksId) {
         this.teamListOfTasksId = teamListOfTasksId;
         return this;
@@ -227,11 +248,12 @@ public final class Task implements Model, Parcelable {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String description, String status, String teamListOfTasksId) {
+    private CopyOfBuilder(String id, String title, String description, String status, String image, String teamListOfTasksId) {
       super.id(id);
       super.title(title)
         .description(description)
         .status(status)
+        .image(image)
         .teamListOfTasksId(teamListOfTasksId);
     }
     
@@ -248,6 +270,11 @@ public final class Task implements Model, Parcelable {
     @Override
      public CopyOfBuilder status(String status) {
       return (CopyOfBuilder) super.status(status);
+    }
+    
+    @Override
+     public CopyOfBuilder image(String image) {
+      return (CopyOfBuilder) super.image(image);
     }
     
     @Override

@@ -22,6 +22,7 @@
     <string name="btn_sign_up">Sign Up</string>
     <string name="btn_sign_in">"Log in "</string>
     <string name="log_out">log out</string>
+    <string name="btn_upload">UPLOAD</string>
     <array name="state_spinner">
         <item>COMPLETE</item>
         <item>IN_PROGRESS</item>

@@ -92,9 +92,7 @@ public class SignupActivity extends AppCompatActivity {
                     // show a dialog of the error below
                     // error.getMessage()
 
-                    new AlertDialog.Builder(SignupActivity.this)
-                            .setTitle("Error")
-                            .setMessage(error.getMessage()).show();
+
                 }
         );
     }

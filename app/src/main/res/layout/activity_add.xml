@@ -75,8 +75,19 @@
         />
 
     <Button
+        android:id="@+id/btn_upload"
+        android:layout_width="200dp"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_upload"
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        />
+
+    <Button
         android:id="@+id/addButton"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
+        android:padding="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"

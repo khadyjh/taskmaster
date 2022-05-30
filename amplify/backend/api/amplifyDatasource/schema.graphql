@@ -12,6 +12,7 @@ type Task @model {
   title: String!
   description: String
   status: String
+  image:String
 }
 type Note @model {
   id: ID!

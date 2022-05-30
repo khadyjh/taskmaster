@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         Button allTaskButton=findViewById(R.id.btnAllTask);
         Button addTaskButton=findViewById(R.id.btnAddTask);
 
-
-
         allTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -271,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         recycleIntent.putExtra("title",taskList.get(position).getTitle());
         recycleIntent.putExtra("description",taskList.get(position).getDescription());
         recycleIntent.putExtra("state",taskList.get(position).getStatus());
+        recycleIntent.putExtra("image",taskList.get(position).getImage());
         startActivity(recycleIntent);
     }
 
@@ -295,21 +294,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         mTeam = sharedPreferences.getString(SettingsActivity.TEAM_NAME,"team1");
 //        Log.i(TAG, "setTeamName: team name =>"+mTeam);
     }
-
-
-    public void amplifyConfigure(){
-        try {
-            Amplify.addPlugin(new AWSApiPlugin());
-            Amplify.addPlugin(new AWSDataStorePlugin());
-            Amplify.addPlugin(new AWSCognitoAuthPlugin());
-            Amplify.configure(getApplicationContext());
-
-//            Log.i(TAG, "Initialized Amplify");
-        } catch (AmplifyException e) {
-//            Log.e(TAG, "Could not initialize Amplify", e);
-        }
-    }
-
 
     public void setTeams(){
         //team 1
@@ -374,7 +358,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         );
     }
 
-
     public void getDataFromCloud(){
         Amplify.DataStore.query(Task.class,
                 tasks -> {
@@ -397,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                 failure -> Log.e(TAG, "Query failed.", failure)
         );
     }
-
 
     public void costumeTeam(){
         if(mTeam==null){
@@ -430,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         );
     }
 
-
     // Logout AWS
     private void logout() {
         Amplify.Auth.signOut(
@@ -443,7 +424,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                 error -> Log.e(TAG, error.toString())
         );
     }
-
 
     private void authSession(String method) {
         Amplify.Auth.fetchAuthSession(

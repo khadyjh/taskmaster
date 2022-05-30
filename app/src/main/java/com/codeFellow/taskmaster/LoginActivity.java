@@ -8,9 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.amplifyframework.core.Amplify;
+import com.squareup.picasso.Picasso;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
     Button login;
 
+    ImageView img;
     ProgressBar mLoadingProgressBar;
 
     @Override
@@ -32,6 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         login=findViewById(R.id.btn_log_in);
 
 //        mLoadingProgressBar=findViewById(R.id.loading);
+
+        img=findViewById(R.id.imageView);
+
+        Picasso.get().load("https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg").into(img);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
