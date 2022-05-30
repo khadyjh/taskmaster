@@ -72,3 +72,32 @@ adding relation to the database model like **hasMany**
 
 ### screenshot
 ![taskTable](./screenshots/lab33.png)
+
+# lab 36
+
+adding sign up and login by using aws cognito
+
+### screenshot
+
+sign up page
+
+![signup](./screenshots/signup.png)
+
+
+login page 
+
+![login](./screenshots/logout.png)
+
+cognito
+
+![cognito](./screenshots/Screenshot%202022-05-29%20222755.png)
+
+
+# lab37
+
+allow the user to upload picture using S3 AWS storage
+
+### screenshot
+![](./screenshots/lab371.png)
+
+![](./screenshots/lab37.png)
