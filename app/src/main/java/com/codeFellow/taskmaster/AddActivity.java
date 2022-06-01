@@ -23,7 +23,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.api.graphql.model.ModelMutation;
@@ -35,9 +37,12 @@ import com.amplifyframework.datastore.generated.model.Team;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +52,11 @@ public class AddActivity extends AppCompatActivity {
     private static String URL;
     private static final int REQUEST_CODE = 123;
 
-    public int counter=0;
-    public String key="image"+counter+".jpg";
-
     private Handler handler;
     private List<Team> teamsList=new ArrayList<>();
     private List<String> teams=new ArrayList<>();
+
+    Boolean flag=false;
 
     Spinner teamSelector;
     Button mUpload;
@@ -87,8 +91,14 @@ public class AddActivity extends AppCompatActivity {
 
         mUpload=findViewById(R.id.btn_upload);
 
+        TextView uploadState=findViewById(R.id.textView_upload);
+
         spinner();
 
+        // need to fix
+        if(URL!=null){
+            uploadState.setText("image uploaded successfully");
+        }
         // set data to the spinner
 //        Spinner teamSpinner=findViewById(R.id.spinnerTeam);
 //
@@ -103,6 +113,9 @@ public class AddActivity extends AppCompatActivity {
 //        Log.i(TAG, "onCreate: "+ test+"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
                 ///////
+
+
+
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +129,12 @@ public class AddActivity extends AppCompatActivity {
 
 
 
+                if(!flag){
+                    sharedImg();
+                    getImgUrl();
+                }
+
+                Log.i(TAG, "onClick: flag" +flag );
                 // method to save task to the backend cloud
                 saveDataAmplify(title,description,state,team);
 
@@ -132,6 +151,8 @@ public class AddActivity extends AppCompatActivity {
                 Intent backToMain=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(backToMain);
 
+
+
             }
         });
 
@@ -140,13 +161,17 @@ public class AddActivity extends AppCompatActivity {
         mUpload.setOnClickListener(view -> {
             pictureUpload();
             getImgUrl();
+            flag=true;
+            Log.i(TAG, "onCreate: flag " +  flag);
         });
+
 
         // action bar
         ActionBar actionBar=getSupportActionBar();
 
         assert actionBar != null;
         actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
     // action bar
@@ -161,7 +186,13 @@ public class AddActivity extends AppCompatActivity {
     }
 
 
-    public void saveDataAmplify(String title, String description , String state,String team){
+    @Override
+    protected void onResume() {
+        flag=false;
+        super.onResume();
+    }
+
+    public void saveDataAmplify(String title, String description , String state, String team){
 
         // lab 32
 
@@ -433,6 +464,55 @@ public class AddActivity extends AppCompatActivity {
         );
     }
 
+
+
+    public void sharedImg(){
+//        ImageView img=findViewById(R.id.imageViewtest);
+
+        String title=titleEditText.getText().toString();
+
+        Intent intent=getIntent();
+        // the main code line
+        /*
+        https://medium.com/swlh/sharing-image-to-android-app-using-intent-filter-to-react-native-d112308328d5
+         */
+        Uri imgUri=intent.getParcelableExtra(Intent.EXTRA_STREAM);
+
+//        if(imgUri!=null){
+//            try {
+//                InputStream is = getContentResolver().openInputStream(imgUri);
+////                img.setImageBitmap(BitmapFactory.decodeStream(is));
+//            }catch (FileNotFoundException e){
+//                Log.e(TAG, "onCreate: "+e.getMessage() );
+//            }
+//        }else {
+//            Log.e(TAG, "onCreate: out tttttttttttttttttttttttttttttt" );
+//        }
+
+
+        if(imgUri!=null) {
+            try {
+                Bitmap bitmap = getBitmapFromUri(imgUri);
+
+                File file = new File(getApplicationContext().getFilesDir(), title + ".jpg");
+                OutputStream os = new BufferedOutputStream(new FileOutputStream(file));
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+                os.close();
+
+                // upload to s3
+                // uploads the file
+                Amplify.Storage.uploadFile(
+                        title + ".jpg",
+                        file,
+                        result -> Log.i(TAG, "Successfully uploaded: " + result.getKey()),
+                        storageFailure -> Log.e(TAG, "Upload failed", storageFailure)
+                );
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 
 }

@@ -101,3 +101,11 @@ allow the user to upload picture using S3 AWS storage
 ![](./screenshots/lab371.png)
 
 ![](./screenshots/lab37.png)
+
+# lab 38 
+allow the user to share image using task master app
+
+### screenshot
+![](./screenshots/lab38.png)
+
+![](./screenshots/lab381.png)

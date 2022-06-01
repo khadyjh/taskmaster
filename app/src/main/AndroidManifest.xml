@@ -25,18 +25,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
+            android:exported="false"/>
+
         <activity
             android:name=".AddActivity"
-            android:exported="false" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="image/*"/>
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".TaskDetailActivity"
-            android:exported="false" /> <!-- <activity -->
+            android:exported="false" />
+        <!-- <activity -->
         <!-- android:name=".AddActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -44,7 +54,9 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
     </application>
 
 </manifest>
