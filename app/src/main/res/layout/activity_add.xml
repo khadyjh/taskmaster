@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AddActivity"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".AddActivity">
 
     <TextView
         android:id="@+id/addTaskView"
@@ -16,43 +15,42 @@
         android:layout_margin="10dp"
         android:text="@string/lbl_add_task"
         android:textColor="#2C061F"
-        android:textStyle="bold"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/taskTitleView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:layout_margin="10dp"
         android:text="@string/lbl_task_title"
         android:textColor="#2C061F"
-        />
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/taskTitleEditTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/lbl_task_title"
         android:layout_margin="10dp"
-        />
+        android:hint="@string/lbl_task_title" />
 
     <TextView
         android:id="@+id/taskDescriptionView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lbl_task_description"
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:layout_margin="10dp"
+        android:text="@string/lbl_task_description"
         android:textColor="#2C061F"
-        />
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <EditText
         android:id="@+id/taskDescriptionEditTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/lbl_task_description"
         android:layout_margin="10dp"
+        android:hint="@string/lbl_task_description"
 
         />
 
@@ -63,34 +61,46 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:entries="@array/state_spinner"
-        android:spinnerMode="dropdown"
-        />
+        android:spinnerMode="dropdown" />
 
     <Spinner
         android:id="@+id/spinnerTeam"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:spinnerMode="dropdown"
-        />
+        android:spinnerMode="dropdown" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/imageViewtest"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/alltask" />-->
 
     <Button
         android:id="@+id/btn_upload"
         android:layout_width="200dp"
-        android:padding="10dp"
         android:layout_height="wrap_content"
-        android:text="@string/btn_upload"
         android:layout_gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="@string/btn_upload"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView_upload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        />
+      />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="300dp"
-        android:padding="10dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
+        android:padding="10dp"
         android:text="@string/lbl_add_task"
         android:textStyle="bold" />
 
@@ -98,10 +108,13 @@
         android:id="@+id/totalTasksView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/lbl_total_tasks"
-        android:textStyle="bold"
-        android:textSize="20sp"
         android:layout_margin="10dp"
+        android:text="@string/lbl_total_tasks"
         android:textColor="#2C061F"
-        />
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+
+
+
 </LinearLayout>
