@@ -18,6 +18,8 @@ public class TaskDetailActivity extends AppCompatActivity {
     TextView mTitle;
     TextView mDescription;
     TextView mState;
+    TextView mLong;
+    TextView mLat;
     ImageView mImage;
 
     @Override
@@ -26,6 +28,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_task_detail);
         mTitle=findViewById(R.id.text_view_title);
         mDescription=findViewById(R.id.text_view_lorem);
+        mLat=findViewById(R.id.txt_view_lat);
+        mLong=findViewById(R.id.txt_view_long);
         mState=findViewById(R.id.text_view_state);
         mImage=findViewById(R.id.imageView3);
 
@@ -34,6 +38,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         String description=titleIntent.getStringExtra("description");
         String state=titleIntent.getStringExtra("state");
         String image=titleIntent.getStringExtra("image");
+        double latitude=titleIntent.getDoubleExtra("Latitude",0.0);
+        double longitude=titleIntent.getDoubleExtra("Longitude",0.0);
         mTitle.setText(title);
         mDescription.setText(description);
         mState.setText(state);
@@ -42,6 +48,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         if(image!=null){
             Log.i(TAG, "onCreate:=> @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ "+ image);
             Picasso.get().load(image).into(mImage);
+        }
+
+        if(latitude!=0.0 && longitude!=0.0){
+            mLong.setText(String.valueOf(longitude));
+            mLat.setText(String.valueOf(latitude));
         }
 
 

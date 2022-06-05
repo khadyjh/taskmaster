@@ -28,12 +28,16 @@ public final class Task implements Model, Parcelable {
   public static final QueryField DESCRIPTION = field("Task", "description");
   public static final QueryField STATUS = field("Task", "status");
   public static final QueryField IMAGE = field("Task", "image");
+  public static final QueryField LONGITUDE = field("Task", "longitude");
+  public static final QueryField LATITUDE = field("Task", "latitude");
   public static final QueryField TEAM_LIST_OF_TASKS_ID = field("Task", "teamListOfTasksId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String title;
   private final @ModelField(targetType="String") String description;
   private final @ModelField(targetType="String") String status;
   private final @ModelField(targetType="String") String image;
+  private final @ModelField(targetType="Float") Double longitude;
+  private final @ModelField(targetType="Float") Double latitude;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   private final @ModelField(targetType="ID") String teamListOfTasksId;
@@ -57,6 +61,14 @@ public final class Task implements Model, Parcelable {
       return image;
   }
   
+  public Double getLongitude() {
+      return longitude;
+  }
+  
+  public Double getLatitude() {
+      return latitude;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -69,12 +81,14 @@ public final class Task implements Model, Parcelable {
       return teamListOfTasksId;
   }
   
-  private Task(String id, String title, String description, String status, String image, String teamListOfTasksId) {
+  private Task(String id, String title, String description, String status, String image, Double longitude, Double latitude, String teamListOfTasksId) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.status = status;
     this.image = image;
+    this.longitude = longitude;
+    this.latitude = latitude;
     this.teamListOfTasksId = teamListOfTasksId;
   }
   
@@ -91,6 +105,8 @@ public final class Task implements Model, Parcelable {
               ObjectsCompat.equals(getDescription(), task.getDescription()) &&
               ObjectsCompat.equals(getStatus(), task.getStatus()) &&
               ObjectsCompat.equals(getImage(), task.getImage()) &&
+              ObjectsCompat.equals(getLongitude(), task.getLongitude()) &&
+              ObjectsCompat.equals(getLatitude(), task.getLatitude()) &&
               ObjectsCompat.equals(getCreatedAt(), task.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), task.getUpdatedAt()) &&
               ObjectsCompat.equals(getTeamListOfTasksId(), task.getTeamListOfTasksId());
@@ -105,6 +121,8 @@ public final class Task implements Model, Parcelable {
       .append(getDescription())
       .append(getStatus())
       .append(getImage())
+      .append(getLongitude())
+      .append(getLatitude())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .append(getTeamListOfTasksId())
@@ -121,6 +139,8 @@ public final class Task implements Model, Parcelable {
       .append("description=" + String.valueOf(getDescription()) + ", ")
       .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("image=" + String.valueOf(getImage()) + ", ")
+      .append("longitude=" + String.valueOf(getLongitude()) + ", ")
+      .append("latitude=" + String.valueOf(getLatitude()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()) + ", ")
       .append("teamListOfTasksId=" + String.valueOf(getTeamListOfTasksId()))
@@ -147,6 +167,8 @@ public final class Task implements Model, Parcelable {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
@@ -157,6 +179,8 @@ public final class Task implements Model, Parcelable {
       description,
       status,
       image,
+      longitude,
+      latitude,
       teamListOfTasksId);
   }
 
@@ -181,6 +205,8 @@ public final class Task implements Model, Parcelable {
     BuildStep description(String description);
     BuildStep status(String status);
     BuildStep image(String image);
+    BuildStep longitude(Double longitude);
+    BuildStep latitude(Double latitude);
     BuildStep teamListOfTasksId(String teamListOfTasksId);
   }
   
@@ -191,6 +217,8 @@ public final class Task implements Model, Parcelable {
     private String description;
     private String status;
     private String image;
+    private Double longitude;
+    private Double latitude;
     private String teamListOfTasksId;
     @Override
      public Task build() {
@@ -202,6 +230,8 @@ public final class Task implements Model, Parcelable {
           description,
           status,
           image,
+          longitude,
+          latitude,
           teamListOfTasksId);
     }
     
@@ -231,6 +261,18 @@ public final class Task implements Model, Parcelable {
     }
     
     @Override
+     public BuildStep longitude(Double longitude) {
+        this.longitude = longitude;
+        return this;
+    }
+    
+    @Override
+     public BuildStep latitude(Double latitude) {
+        this.latitude = latitude;
+        return this;
+    }
+    
+    @Override
      public BuildStep teamListOfTasksId(String teamListOfTasksId) {
         this.teamListOfTasksId = teamListOfTasksId;
         return this;
@@ -248,12 +290,14 @@ public final class Task implements Model, Parcelable {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String title, String description, String status, String image, String teamListOfTasksId) {
+    private CopyOfBuilder(String id, String title, String description, String status, String image, Double longitude, Double latitude, String teamListOfTasksId) {
       super.id(id);
       super.title(title)
         .description(description)
         .status(status)
         .image(image)
+        .longitude(longitude)
+        .latitude(latitude)
         .teamListOfTasksId(teamListOfTasksId);
     }
     
@@ -275,6 +319,16 @@ public final class Task implements Model, Parcelable {
     @Override
      public CopyOfBuilder image(String image) {
       return (CopyOfBuilder) super.image(image);
+    }
+    
+    @Override
+     public CopyOfBuilder longitude(Double longitude) {
+      return (CopyOfBuilder) super.longitude(longitude);
+    }
+    
+    @Override
+     public CopyOfBuilder latitude(Double latitude) {
+      return (CopyOfBuilder) super.latitude(latitude);
     }
     
     @Override

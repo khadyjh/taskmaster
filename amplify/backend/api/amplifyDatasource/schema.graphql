@@ -13,7 +13,10 @@ type Task @model {
   description: String
   status: String
   image:String
+  longitude:Float
+  latitude:Float
 }
+
 type Note @model {
   id: ID!
   content: String!

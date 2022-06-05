@@ -13,6 +13,8 @@ mutation CreateTeam(
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -44,6 +46,8 @@ mutation UpdateTeam(
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -75,6 +79,8 @@ mutation DeleteTeam(
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -102,6 +108,8 @@ mutation CreateTask(
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version
@@ -120,6 +128,8 @@ mutation UpdateTask(
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version
@@ -138,6 +148,8 @@ mutation DeleteTask(
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version

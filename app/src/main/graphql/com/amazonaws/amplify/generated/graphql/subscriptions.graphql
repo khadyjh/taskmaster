@@ -10,6 +10,8 @@ subscription OnCreateTeam {
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -38,6 +40,8 @@ subscription OnUpdateTeam {
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -66,6 +70,8 @@ subscription OnDeleteTeam {
         description
         status
         image
+        longitude
+        latitude
         createdAt
         updatedAt
         _version
@@ -90,6 +96,8 @@ subscription OnCreateTask {
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version
@@ -105,6 +113,8 @@ subscription OnUpdateTask {
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version
@@ -120,6 +130,8 @@ subscription OnDeleteTask {
     description
     status
     image
+    longitude
+    latitude
     createdAt
     updatedAt
     _version
