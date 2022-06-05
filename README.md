@@ -109,3 +109,9 @@ allow the user to share image using task master app
 ![](./screenshots/lab38.png)
 
 ![](./screenshots/lab381.png)
+
+# lab 39 
+allow the user to add the location using google services api 
+
+### screenshot
+![](./screenshots/lab39.png)

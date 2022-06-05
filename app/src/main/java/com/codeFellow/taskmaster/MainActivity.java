@@ -34,7 +34,7 @@ import com.amplifyframework.datastore.AWSDataStorePlugin;
 
 import com.amplifyframework.datastore.generated.model.Task;
 import com.amplifyframework.datastore.generated.model.Team;
-import com.codeFellow.taskmaster.data.State;
+//import com.codeFellow.taskmaster.data.State;
 import com.codeFellow.taskmaster.data.TaskAdapter;
 
 
@@ -270,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         recycleIntent.putExtra("description",taskList.get(position).getDescription());
         recycleIntent.putExtra("state",taskList.get(position).getStatus());
         recycleIntent.putExtra("image",taskList.get(position).getImage());
+        recycleIntent.putExtra("Latitude",taskList.get(position).getLatitude());
+        recycleIntent.putExtra("Longitude",taskList.get(position).getLongitude());
         startActivity(recycleIntent);
     }
 

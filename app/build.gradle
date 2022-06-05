@@ -1,5 +1,6 @@
 plugins {
     id 'com.android.application'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -28,6 +29,11 @@ android {
 }
 
 dependencies {
+
+//    implementation 'com.sothree.slidinguppanel:library:3.4.0'
+
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
     implementation "androidx.room:room-runtime:2.4.2"
     implementation 'androidx.test.espresso:espresso-contrib:3.4.0'
