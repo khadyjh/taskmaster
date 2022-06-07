@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     int number;
     // handler
     private Handler handler;
+    private Handler handler2;
     private String mTeam;
 
 
@@ -65,28 +66,26 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
         mUserNameView=findViewById(R.id.text_view_my_task);
 
-        // amplify configuration
-//        amplifyConfigure();
-        //
-//        getDataFromCloud();
-
-        authAttribute();
-        costumeTeam();
         handler=new Handler(Looper.getMainLooper(),msg->{
-//            Toast.makeText(this, msg.toString(), Toast.LENGTH_SHORT).show();
-//            Log.i(TAG, "onCreate: "+msg.getData().get("task"));
-//            Log.i(TAG, "onCreate: "+msg.getData().get("list"));
-            Log.i(TAG, "onCreate:************************************** "+msg.getData().get("name"));
-            mUserNameView.setText((String)msg.getData().get("name"));
-            taskListFromDatabase.add((Task) msg.getData().get("task"));
 
-            sitRecyclerView();
+            Log.i(TAG, "onCreate: "+msg.getData().get("team"));
+             Team team= (Team) msg.getData().get("team");
+             taskList=team.getListOfTasks();
+             sitRecyclerView();
+             return true;
+        });
+
+        handler2=new Handler(Looper.getMainLooper(),msg->{
+            mUserNameView.setText(msg.getData().get("name").toString());
             return true;
         });
 
-
-        //method to set task number
         setTaskNumber();
+        setTeamName();
+        costumeTeam();
+        authAttribute();
+
+
 
         Button allTaskButton=findViewById(R.id.btnAllTask);
         Button addTaskButton=findViewById(R.id.btnAddTask);
@@ -108,41 +107,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
             }
         });
 
-//        getDataFromCloud();
-        ///////////////////////////////////////////////////////lab27////////////////////////////////////
-//        mBtnTask1=findViewById(R.id.btn_task_1);
-//        mBtnTask2=findViewById(R.id.btn_task_2);
-//        mBtnTask3=findViewById(R.id.btn_task_3);
-
-
-//        mBtnTask1.setOnClickListener(view -> {
-//            task1();
-//        });
-//
-//        mBtnTask2.setOnClickListener(view -> {
-//            task2();
-//        });
-//
-//        mBtnTask3.setOnClickListener(view -> {
-//            task3();
-//        });
-        ///////////////////////////////////////////////////////lab28////////////////////////////////////
-
-
-
-        // method to set recycler view adapter and to set the data from database
-
-
-
-
-        // create 3 teams
-//        test();
-
-
-        setTeamName();
-//        Log.i(TAG, "onCreate: start => " + taskList);
-
-
     }
 
     ///////////////////////////////////////////////////////lab27////////////////////////////////////
@@ -156,45 +120,20 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         setName();
         // method to set team name
         setTeamName();
-        // method to set recycler view adapter and to set the data from database
 
         //method to set task number
         setTaskNumber();
 
         costumeTeam();
         sitRecyclerView();
-
-//        Log.i(TAG, "onResume:hello => "+ mTeam +" " + taskList);
-
-        authAttribute();
-        handler=new Handler(Looper.getMainLooper(),msg->{
-            Log.i(TAG, "onCreate:************************************** "+msg.getData().get("name"));
-            mUserNameView.setText((String)msg.getData().get("name"));
-            sitRecyclerView();
-            return true;
-        });
-
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         setTaskNumber();
-        costumeTeam();
-        sitRecyclerView();
-//        Log.i(TAG, "onStart:start => "+ taskList);
-
-
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        costumeTeam();
-        sitRecyclerView();
-//        Log.i(TAG, "onRestart: start => " + taskList);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -225,23 +164,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
         startActivity(settingIntent);
     }
 
-//    public void task1(){
-//        Intent task1Intent=new Intent(this,TaskDetailActivity.class);
-//        task1Intent.putExtra("task1",mBtnTask1.getText().toString());
-//        startActivity(task1Intent);
-//    }
-//
-//    public void task2(){
-//        Intent task1Intent=new Intent(this,TaskDetailActivity.class);
-//        task1Intent.putExtra("task1",mBtnTask2.getText().toString());
-//        startActivity(task1Intent);
-//    }
-//
-//    public void task3(){
-//        Intent task1Intent=new Intent(this,TaskDetailActivity.class);
-//        task1Intent.putExtra("task1",mBtnTask3.getText().toString());
-//        startActivity(task1Intent);
-//    }
 
     @SuppressLint("SetTextI18n")
     public void setName(){
@@ -250,18 +172,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     }
 
     ///////////////////////////////////////////////////////lab28////////////////////////////////////
-    public void fitchData(){
-//        taskList.add(new Task("task1","hello from task1 ", State.NEW));
-//        taskList.add(new Task("task2","hello from task2", State.ASSIGNED));
-//        taskList.add(new Task("task3","hello from task3", State.IN_PROGRESS));
-//        taskList.add(new Task("task4","hello from task4", State.COMPLETE));
-//        taskList.add(new Task("task5","hello from task5", State.ASSIGNED));
-//        taskList.add(new Task("task6","hello from task6", State.NEW));
-//        taskList.add(new Task("task7","hello from task7", State.NEW));
-//        taskList.add(new Task("task8","hello from task8", State.NEW));
-//        taskList.add(new Task("task9","hello from task9", State.NEW));
-//        taskList.add(new Task("task10","hello from task10", State.NEW));
-    }
 
     @Override
     public void onOneTaskClicked(int position) {
@@ -366,12 +276,12 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                     while (tasks.hasNext()) {
                         Task task = tasks.next();
                         //
-                        Bundle bundle=new Bundle();
-//                        bundle.putString("title",task.getTitle());
-                        bundle.putParcelable("task",task);
-                        Message message=new Message();
-                        message.setData(bundle);
-                        handler.sendMessage(message);
+//                        Bundle bundle=new Bundle();
+////                        bundle.putString("title",task.getTitle());
+//                        bundle.putParcelable("task",task);
+//                        Message message=new Message();
+//                        message.setData(bundle);
+//                        handler.sendMessage(message);
 
 //                        Log.i(TAG, "Title: " + task.getTitle());
 //                        runOnUiThread(()->{
@@ -384,27 +294,25 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     }
 
     public void costumeTeam(){
-        if(mTeam==null){
-            mTeam="team1";
-        }
         Amplify.API.query(
                 ModelQuery.list(Team.class, Team.NAME.eq(mTeam)),
                 response -> {
+                    Log.i(TAG, "costumeTeam: "+response.getData());
                     for (Team todo : response.getData()) {
                         //
-                      //  Bundle bundle=new Bundle();
-                    //    bundle.putString("name",todo.getName());
-                     //   bundle.putParcelable("team",todo);
-                       // bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) todo.getListOfTasks());
-                       // Message message=new Message();
-                       //message.setData(bundle);
-                     //   handler.sendMessage(message);
+                        Bundle bundle=new Bundle();
+//                        bundle.putString("name",todo.getName());
+                        bundle.putParcelable("team",todo);
+//                        bundle.putParcelableArrayList("list", (ArrayList<? extends Parcelable>) todo.getListOfTasks());
+                        Message message=new Message();
+                       message.setData(bundle);
+                        handler.sendMessage(message);
                         //
 
-                        taskList=todo.getListOfTasks();
+//                        taskList=todo.getListOfTasks();
 //                        System.out.println(taskList+"===========================================");
 
-                        Log.i(TAG, todo.getName()+"^^^^^^^**************************************");
+                        Log.i(TAG, todo.getListOfTasks()+"^^^^^^^**************************************");
 
                     }
 
@@ -448,7 +356,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
                     Message message = new Message();
                     message.setData(bundle);
 
-                    handler.sendMessage(message);
+                    handler2.sendMessage(message);
                 },
                 error -> Log.e(TAG, "Failed to fetch user attributes.", error)
         );
