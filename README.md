@@ -115,3 +115,9 @@ allow the user to add the location using google services api
 
 ### screenshot
 ![](./screenshots/lab39.png)
+
+# lab 41
+add more aws api services like convert text to speech and Analytics
+
+### screenshot
+![](./screenshots/lab41.png)

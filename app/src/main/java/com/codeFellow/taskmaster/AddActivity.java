@@ -95,17 +95,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-
-//        getDataFromCloud();
-        // handler
-//        handler=new Handler(Looper.getMainLooper(), msg->{
-//            Log.i(TAG, "onCreate: "+msg.getData().get("team")+"*********");
-//            teamsList.add((Team) msg.getData().get("team"));
-//            teams.add(msg.getData().get("name").toString());
-//            return true;
-//        });
-
-
         titleEditText = findViewById(R.id.taskTitleEditTxt);
         EditText descriptionEditText=findViewById(R.id.taskDescriptionEditTxt);
 
@@ -127,22 +116,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         if(URL!=null){
             uploadState.setText("image uploaded successfully");
         }
-        // set data to the spinner
-//        Spinner teamSpinner=findViewById(R.id.spinnerTeam);
-//
-//        ArrayAdapter<String> teamAdapter= new ArrayAdapter<>(
-//                getBaseContext(),
-//                androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-//                teams
-//        );
-//        teamSpinner.setAdapter(teamAdapter);
-
-//        String test=teamSpinner.getSelectedItem().toString();
-//        Log.i(TAG, "onCreate: "+ test+"^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-
-                ///////
-
-
 
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,15 +139,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                 // method to save task to the backend cloud
                 saveDataAmplify(title,description,state,team);
 
-
-                // save to room code
-//                Task task=new Task(title,description,Enum.valueOf(State.class,state));
-//                System.out.println("******************************************  "+task);
-
-//               long newTask = AppDatabase.getInstance(getApplicationContext()).taskDao().insertStudent(task);
-//
-//                Log.i(TAG, "onClick: new task added"+newTask);
-
                 // back to main page after task is saved
                 Intent backToMain=new Intent(getApplicationContext(),MainActivity.class);
                 startActivity(backToMain);
@@ -190,7 +154,7 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
             pictureUpload();
             getImgUrl();
             flag=true;
-            Log.i(TAG, "onCreate: flag " +  flag);
+            Log.i(TAG, "onCreate: flag " + flag);
         });
 
 
@@ -230,28 +194,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void saveDataAmplify(String title, String description , String state, String team){
-
-        // lab 32
-
-        // get the data from ui
-//       Task taskAmplify= Task
-//                .builder().title(title).description(description).status(state).build();
-//
-//        // save the data
-//        Amplify.DataStore.save(taskAmplify,
-//                successful->{
-//                    Log.i(TAG, "test: saved");
-//                },
-//                fail->{
-//                    Log.e(TAG, "test: fail to save " );
-//                });
-//
-//        // save to backend
-//        Amplify.API.mutate(
-//                ModelMutation.create(taskAmplify),
-//                success -> Log.i(TAG, "Saved item: " + success.getData()),
-//                error -> Log.e(TAG, "Could not save item to API", error)
-//        );
 
         // lab 33
         Amplify.API.query(
@@ -334,28 +276,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
 
     // for handler
     public void getDataFromCloud(){
-        // data from local datastore
-//        Amplify.DataStore.query(Team.class,
-//                teams -> {
-//                    while (teams.hasNext()) {
-//                        Team team = teams.next();
-//                        //
-//                        Bundle bundle=new Bundle();
-//                        bundle.putString("name",team.getName());
-//                        bundle.putParcelable("team",team);
-//                        Message message=new Message();
-//                        message.setData(bundle);
-//                        handler.sendMessage(message);
-//                        //
-//                        Log.i(TAG, "Name : -> " + team.getName());
-//                    }
-//                },
-//                failure -> Log.e("MyAmplifyApp", "Query failed.", failure)
-//        );
-
-
-//        return taskListFromDatabase;
-
         // data from api
         Amplify.API.query(
                 ModelQuery.list(Team.class, Team.NAME.contains("t")),
@@ -481,16 +401,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void getImgUrl() {
-//        Amplify.Storage.downloadFile(
-//                "image.jpg",
-//                new File(getApplicationContext().getFilesDir() + "/download.jpg"),
-//                result -> {
-//                    Log.i(TAG, "The root path is: " + getApplicationContext().getFilesDir());
-//                    Log.i(TAG, "Successfully downloaded: " + result.getFile().getName());
-//                },
-//                error -> Log.e(TAG,  "Download Failure", error)
-//        );
-
         String title=titleEditText.getText().toString();
 
         Amplify.Storage.getUrl(
@@ -502,8 +412,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
                 error -> Log.e(TAG, "URL generation failure", error)
         );
     }
-
-
 
     public void sharedImg(){
 //        ImageView img=findViewById(R.id.imageViewtest);
@@ -598,11 +506,6 @@ public class AddActivity extends AppCompatActivity implements OnMapReadyCallback
         mLocationRequest.setInterval(5);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
-
-        // setting LocationRequest
-        // on FusedLocationClient
-//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-//        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
     }
 
     // method to check for permissions
