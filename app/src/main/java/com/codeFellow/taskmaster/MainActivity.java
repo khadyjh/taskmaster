@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
     protected void onResume() {
         super.onResume();
         // method to set username
-        setName();
+//        setName();
         // method to set team name
         setTeamName();
 
@@ -126,12 +126,6 @@ public class MainActivity extends AppCompatActivity implements TaskAdapter.Custo
 
         costumeTeam();
         sitRecyclerView();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        setTaskNumber();
     }
 
 

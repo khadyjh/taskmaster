@@ -21,7 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText password;
     Button login;
 
-    ImageView img;
+//    ImageView img;
     ProgressBar mLoadingProgressBar;
 
     @Override
@@ -36,9 +36,9 @@ public class LoginActivity extends AppCompatActivity {
 
 //        mLoadingProgressBar=findViewById(R.id.loading);
 
-        img=findViewById(R.id.imageView);
+//        img=findViewById(R.id.imageView);
 
-        Picasso.get().load("https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg").into(img);
+//        Picasso.get().load("https://www.industrialempathy.com/img/remote/ZiClJf-1920w.jpg").into(img);
 
         login.setOnClickListener(new View.OnClickListener() {
             @Override
