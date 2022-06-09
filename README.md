@@ -121,3 +121,20 @@ add more aws api services like convert text to speech and Analytics
 
 ### screenshot
 ![](./screenshots/lab41.png)
+
+
+# lab 42
+
+add google AdMob to the app so i can display Ads in the app
+
+### screenshot
+
+**Banner AD**
+![banner Ad](./screenshots/lab41.png)
+
+**Interstitial Ad**
+![InterstitialAd](./screenshots/lab421.png)
+
+**Reworded Ad**
+![](./screenshots/lab422.png)
+![](./screenshots/lab423.png)
