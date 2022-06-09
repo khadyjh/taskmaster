@@ -24,6 +24,7 @@
     <string name="log_out">log out</string>
     <string name="btn_upload">UPLOAD</string>
     <string name="btn_location">add location</string>
+    <string name="lbl_ad">load Ad</string>
     <array name="state_spinner">
         <item>COMPLETE</item>
         <item>IN_PROGRESS</item>
